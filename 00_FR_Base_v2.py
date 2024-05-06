@@ -115,19 +115,37 @@ def get_expenses(var_fixed):
     return [expense_frame, sub_total]
 
 
+# prints expense frames
+def expense_print(heading, frame, subtotal):
+    print()
+    print("***** {} Costs *****")
+    print(frame)
+    print()
+    print("{} Costs: ${:.2f}".format(heading, subtotal))
+    return ""
+
+
 # main routine goes here
 # get product name
 product_name = not_blank("Product name: ", "The product name cannot be blank")
 
+print()
+print("Please enter your variable costs below")
 # get variable costs
 variable_expenses = get_expenses("variable")
 variable_frame = variable_expenses[0]
 variable_sub = variable_expenses[1]
 
-# get fixed costs
-fixed_expenses = get_expenses("fixed")
-fixed_frame = fixed_expenses[0]
-fixed_sub = fixed_expenses [1]
+print()
+have_fixed = yes_no("Do you have any fixed costs (y/n)? ")
+
+if have_fixed == "yes":
+    # get fixed costs
+    fixed_expenses = get_expenses("fixed")
+    fixed_frame = fixed_expenses[0]
+    fixed_sub = fixed_expenses [1]
+else:
+    fixed_sub = 0
 
 # find total costs
 
@@ -139,14 +157,10 @@ fixed_sub = fixed_expenses [1]
 
 # printing area
 
-print("***** Variable Costs *****")
-print(variable_frame)
 print()
-
-print("Variable Costs: ${:.2f}".format(variable_sub))
-
-print("***** Fixed Costs *****")
-print(fixed_frame[['Cost']])
+print("***** Fund Raising - {} *****".format(product_name))
 print()
+expense_print("Variable", variable_frame, variable_sub)
 
-print("Fixed Costs: ${:.2f}".format(fixed_sub))
+if have_fixed == "yes":
+    expense_print("Fixed", fixed_frame[['Cost']], fixed_sub)
